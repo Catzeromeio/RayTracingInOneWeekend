@@ -34,7 +34,10 @@ namespace RayTracingInOneWeekend
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(Screen.Width, Screen.Height);
             this.Text = "Ray Tracing In One Weekend";
+            this.MaximumSize = new System.Drawing.Size(Screen.Width,Screen.Height);
+            this.MinimumSize = new System.Drawing.Size(Screen.Width,Screen.Height);
 
+            GameMain.GameInit(this);
             var thread = new Thread(new ThreadStart(GameMain.GameMainProc));
             thread.Start();
         }
