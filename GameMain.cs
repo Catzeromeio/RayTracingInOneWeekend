@@ -1,13 +1,26 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using System.Numerics;
 
 namespace RayTracingInOneWeekend
 {
+    public delegate void Act(int x,int y, in Vector3 color);
     public static class Screen
     {
         public static int Width = 640;
         public static int Height = 360;
+    }
+
+    public struct Coord
+    {
+        public int x;
+        public int y;
+        public Coord(int xx, int yy)
+        {
+            x = xx;
+            y = yy;
+        }
     }
 
     public class GameMain
@@ -43,6 +56,21 @@ namespace RayTracingInOneWeekend
         public static void Render()
         {
             ClearAllBuffers();
+
+            // do renderer logic
+            for (int i = 0; i < Screen.Width; i++)
+            {
+                for (int j = 0; j < Screen.Height; j++)
+                {
+                    var index = GetIndex(i, j);
+                    var pixel = frameBuffer[index];
+                    pixel.X = i * 1.0f/Screen.Width;
+                    pixel.Y = j * 1.0f/Screen.Height;
+                    pixel.Z = 0;
+                    frameBuffer[index] = pixel;
+                }
+            }
+
             BlitFrameBufferToScreen();
         }
 
@@ -75,19 +103,30 @@ namespace RayTracingInOneWeekend
         public static void BlitFrameBufferToScreen()
         {
 
-            for (int i = 0; i < Screen.Width-1; i++)
+            for (int i = 0; i < Screen.Width; i++)
             {
 
-                for (int j = 0; j < Screen.Height-1; j++)
+                for (int j = 0; j < Screen.Height; j++)
                 {
-                    var index = Screen.Width * j + i;
-                    var color = frameBuffer[index];
+                    var color = frameBuffer[GetIndex(i,j)];
                     color = 255 * color;
                     blitMap.SetPixel(i,Screen.Height-1-j, Color.FromArgb((int)color.X, (int)color.Y, (int)color.Z));
                 }
             }
 
             graphic.DrawImage(blitMap,0,0);
+        }
+
+        public static int GetIndex(int x, int y)
+        {
+            return Screen.Width * y + x;
+        }
+        public static Coord IndexToCoord(int index)
+        {
+            int y = index % Screen.Width;
+            int x = index - Screen.Width * y;
+
+            return new Coord(x,y);
         }
     }
 }
