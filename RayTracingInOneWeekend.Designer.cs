@@ -1,4 +1,6 @@
-﻿namespace RayTracingInOneWeekend
+﻿using System.Threading;
+
+namespace RayTracingInOneWeekend
 {
     partial class RayTracingInOneWeekend
     {
@@ -30,8 +32,11 @@
         {
             this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(Screen.Width, Screen.Height);
             this.Text = "Ray Tracing In One Weekend";
+
+            var thread = new Thread(new ThreadStart(GameMain.GameMainProc));
+            thread.Start();
         }
 
         #endregion

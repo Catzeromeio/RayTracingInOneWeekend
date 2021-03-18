@@ -17,4 +17,10 @@ namespace RayTracingInOneWeekend
             InitializeComponent();
         }
     }
+
+    public static class Screen
+    {
+        public static int Width = 640;
+        public static int Height = 360;
+    }
 }
