@@ -1,11 +1,10 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Numerics;
 
 namespace RayTracingInOneWeekend
 {
-    public delegate void Act(int x,int y, in Vector3 color);
     public static class Screen
     {
         public static int Width = 640;
@@ -76,11 +75,11 @@ namespace RayTracingInOneWeekend
 
         public static void ClearAllBuffers()
         {
-            ClearColorBuffer();
+            ClearFrameBuffer();
             ClearDepthBuffer();
         }
 
-        public static void ClearColorBuffer()
+        public static void ClearFrameBuffer()
         {
             for (int i = 0; i < frameBuffer.Length; i++)
             {
