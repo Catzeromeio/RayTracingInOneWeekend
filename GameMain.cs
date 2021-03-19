@@ -39,7 +39,9 @@ namespace RayTracingInOneWeekend
 
         public static void GameInit(Form form)
         {
-            GameMain.graphic = form.CreateGraphics();
+            form.KeyDown += KeyDown;
+
+            graphic = form.CreateGraphics();
             blackBrush = new SolidBrush(Color.Black);
             frameBuffer = new Vector3[Screen.Width * Screen.Height];
             depthBuffer = new Vector3[Screen.Width * Screen.Height];
@@ -64,6 +66,18 @@ namespace RayTracingInOneWeekend
             }
         }
 
+        public static float scale = 0;
+
+        //deal with input like this
+        public static void KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.A)
+            {
+                scale += 0.02f;
+            }
+        }
+
+
         public static void Update()
         {
 
@@ -74,7 +88,7 @@ namespace RayTracingInOneWeekend
             ClearFrameBuffer();
             ClearDepthBuffer();
 
-            var scale = DateTime.Now.Millisecond/1000.0f;
+            //var scale = DateTime.Now.Millisecond/1000.0f;
 
             // do renderer logic
             for (int i = 0; i < Screen.Width; i++)
@@ -129,7 +143,7 @@ namespace RayTracingInOneWeekend
             }
 
             graphic.DrawImage(blitMap,0,0);
-            graphic.DrawString(deltaTime_s.ToString() + " " + timeLastFrameStart_s.ToString() + " " + (DateTime.Now.Ticks/TimeSpan.TicksPerSecond).ToString() ,new Font("Arial", 16), blackBrush,0,0);
+            graphic.DrawString("FPS " + 1/deltaTime_s ,new Font("Arial", 16), blackBrush,0,0);
         }
 
         public static int GetIndex(int x, int y)
