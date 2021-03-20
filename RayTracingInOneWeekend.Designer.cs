@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace RayTracingInOneWeekend
 {
@@ -28,20 +30,36 @@ namespace RayTracingInOneWeekend
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
+
+        Thread thread;
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(Screen.Width, Screen.Height);
             this.Text = "Ray Tracing In One Weekend";
-            this.MaximumSize = new System.Drawing.Size(Screen.Width,Screen.Height);
-            this.MinimumSize = new System.Drawing.Size(Screen.Width,Screen.Height);
 
             GameMain.GameInit(this);
-            var thread = new Thread(new ThreadStart(GameMain.GameMainProc));
+            thread = new Thread(new ThreadStart(GameMain.GameMainProc));
             thread.Start();
         }
 
+        protected override void OnSizeChanged(EventArgs e)
+        {
+            base.OnSizeChanged(e);
+
+            if (thread == null)
+                return;
+            thread.Abort();
+
+
+            Screen.Width = ClientSize.Width;
+            Screen.Height = ClientSize.Height;
+            GameMain.GameInit(this);
+
+            thread = new Thread(new ThreadStart(GameMain.GameMainProc));
+            thread.Start();
+        }
         #endregion
     }
 }
