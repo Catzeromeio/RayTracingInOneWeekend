@@ -8,7 +8,13 @@ namespace RayTracingInOneWeekend
         float radius;
         Vector3 center;
 
-        public HitData? CastRay(Ray r, float minT = 0, float maxT = float.MaxValue)
+        public Sphere(Vector3 sCenter, float sRadius)
+        {
+            center = sCenter;
+            radius = sRadius;
+        }
+
+        public bool CastRay(Ray r, ref HitData hitdata, float minT = 0, float maxT = float.MaxValue)
         {
             if (maxT < minT)
                 throw new Exception(" maxT is smaller than minT !!!");
@@ -24,9 +30,8 @@ namespace RayTracingInOneWeekend
 
             //无解
             if (discriminant < 0)
-                return null;
+                return false;
 
-            HitData hitdata = new HitData();
             var sqrtOfDiscriminant = (float)Math.Sqrt(discriminant);
 
             //检验最小根是否满足
@@ -37,6 +42,7 @@ namespace RayTracingInOneWeekend
                 hitdata.point = r.At(mint);
                 //记录光线从里或者外部射入以及法线
                 hitdata.SetFaceNormal(r,hitdata.point - center);
+                return true;
             }
 
             //检验最大根是否满足
@@ -47,10 +53,11 @@ namespace RayTracingInOneWeekend
                 hitdata.point = r.At(maxt);
                 //记录光线从里或者外部射入以及法线
                 hitdata.SetFaceNormal(r,hitdata.point - center);
+                return true;
             }
 
             //没有符合条件的交点
-            return null;
+            return false;
         }
     }
 }

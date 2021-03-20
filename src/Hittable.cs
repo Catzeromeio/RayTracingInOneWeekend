@@ -11,7 +11,7 @@ namespace RayTracingInOneWeekend
         //里表面法线朝内
         public Vector3 normal;
 
-        bool isHitFromOutside;
+        public bool isHitFromOutside;
 
         public void SetFaceNormal(Ray ray, Vector3 outwardNormal)
         {
@@ -25,6 +25,6 @@ namespace RayTracingInOneWeekend
     {
          //射线测试，如果没有交点或者在[minT,maxT]区间内的交点，返回值为null
          //否则返回最先相交的交点
-         HitData? CastRay(Ray ray, float minT = 0, float maxT = float.MaxValue);
+         bool CastRay(Ray ray,ref HitData hitdata, float minT = 0, float maxT = float.MaxValue);
     }
 }

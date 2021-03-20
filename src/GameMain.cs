@@ -40,6 +40,8 @@ namespace RayTracingInOneWeekend
         public static Vector3 eyePosition;
         public static float viewPortHeight;
 
+        public static HittableList world;
+
 
         public static void GameInit(Form form)
         {
@@ -62,6 +64,10 @@ namespace RayTracingInOneWeekend
             focalLength = 1.0f;
             eyePosition = Vector3.Zero;
             viewPortHeight = 2;
+
+            world = new HittableList();
+            world.Add(new Sphere(new Vector3(0,0,-1),0.5f));
+            world.Add(new Sphere(new Vector3(0,-100.5f,-1),100));
         }
 
         public static void GameMainProc()
