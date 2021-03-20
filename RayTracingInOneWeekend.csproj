@@ -56,8 +56,10 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="src\GameMain.cs" />
+    <Compile Include="src\Hittable.cs" />
     <Compile Include="src\Ray.cs" />
     <Compile Include="src\RayTracingGameMain.cs" />
+    <Compile Include="src\Sphere.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
