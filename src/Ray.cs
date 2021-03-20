@@ -1,10 +1,10 @@
 ﻿using System.Numerics;
-namespace RayTracingInOneWeekend.src
+namespace RayTracingInOneWeekend
 {
-    class Ray
+    public class Ray
     {
         public Vector3 Origin { get; set; }
-        public Vector3 direction;
+        private Vector3 direction;
         public Vector3 Direction {
             get { return direction; }
             set

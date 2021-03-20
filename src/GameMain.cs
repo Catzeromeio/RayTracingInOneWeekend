@@ -22,7 +22,7 @@ namespace RayTracingInOneWeekend
         }
     }
 
-    public class GameMain
+     public partial class GameMain
     {
         public static Graphics graphic;
         public static SolidBrush blackBrush;
@@ -35,6 +35,10 @@ namespace RayTracingInOneWeekend
         public static double deltaTime_s;
         public static double timeLastFrameStart_s;
         public static float frameRate;
+
+        public static float focalLength;
+        public static Vector3 eyePosition;
+        public static float viewPortHeight;
 
 
         public static void GameInit(Form form)
@@ -52,6 +56,12 @@ namespace RayTracingInOneWeekend
             deltaTime_s = 0;
             timeLastFrameStart_s = 0;
             frameRate = 60;
+
+            //观察位置到视口平面距离
+            //注：这里看向 -z
+            focalLength = 1.0f;
+            eyePosition = Vector3.Zero;
+            viewPortHeight = 2;
         }
 
         public static void GameMainProc()
@@ -66,15 +76,10 @@ namespace RayTracingInOneWeekend
             }
         }
 
-        public static float scale = 0;
-
         //deal with input like this
         public static void KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.A)
-            {
-                scale += 0.02f;
-            }
+
         }
 
 
@@ -88,20 +93,23 @@ namespace RayTracingInOneWeekend
             ClearFrameBuffer();
             ClearDepthBuffer();
 
-            //var scale = DateTime.Now.Millisecond/1000.0f;
-
             // do renderer logic
+            // 右手坐标系
+            //注：眼睛看向 -z
             for (int i = 0; i < Screen.Width; i++)
             {
                 for (int j = 0; j < Screen.Height; j++)
                 {
                     var index = GetIndex(i, j);
-                    var pixel = frameBuffer[index];
-                    pixel.X = i * 1.0f/Screen.Width;
-                    pixel.Y = j * 1.0f/Screen.Height;
-                    pixel.Z = 0;
-                    pixel =  pixel * scale;
-                    frameBuffer[index] = pixel;
+                    //计算像素中心
+                    var pixelP = new Vector2(i+0.5f, j+0.5f);
+                    //中心平移到原点(2D)
+                    pixelP = pixelP - new Vector2(Screen.Width / 2.0f, Screen.Height / 2.0f);
+                    //缩放到视口大小
+                    pixelP = viewPortHeight/Screen.Height * pixelP ;
+                    //从眼睛位置到3D空间缩放后像素发射射线
+                    var ray = new Ray(eyePosition, new Vector3(pixelP.X, pixelP.Y, -focalLength) - eyePosition);
+                    frameBuffer[index] = Ray_Color(ray);
                 }
             }
 
