@@ -63,6 +63,7 @@
     <Compile Include="src\Ray.cs" />
     <Compile Include="src\RayTracingGameMain.cs" />
     <Compile Include="src\Sphere.cs" />
+    <Compile Include="src\Utilities.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

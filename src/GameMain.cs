@@ -38,6 +38,8 @@ namespace RayTracingInOneWeekend
 
         public static HittableList world;
 
+        private static Random randomer;
+
         public static void GameInit(Form form)
         {
             form.KeyDown += KeyDown;
@@ -58,6 +60,8 @@ namespace RayTracingInOneWeekend
             world = new HittableList();
             world.Add(new Sphere(new Vector3(0,0,-1),0.5f));
             world.Add(new Sphere(new Vector3(0,-100.5f,-1),100));
+
+            randomer = new Random(1991);
         }
 
         public static void GameMainProc()

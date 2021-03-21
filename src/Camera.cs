@@ -14,6 +14,7 @@ namespace RayTracingInOneWeekend
         private Size resolution;
 
         public int sampleRoot = 2;
+        public int rayTracingDepth = 500;
 
         public Size Resolution
         {
@@ -73,7 +74,7 @@ namespace RayTracingInOneWeekend
                             //从眼睛位置到3D空间缩放后像素发射射线
                             var ray = new Ray(position, new Vector3(pixelP.X, pixelP.Y, position.Z -focalLength) - position);
                             //叠加
-                            frameBuffer[index] += GameMain.Ray_Color(ray, scene);
+                            frameBuffer[index] += GameMain.Ray_Color(ray, scene,rayTracingDepth);
                         }
                     }
 
