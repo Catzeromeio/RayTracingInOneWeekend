@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Numerics;
 
 namespace RayTracingInOneWeekend
@@ -79,6 +80,10 @@ namespace RayTracingInOneWeekend
                     }
 
                     frameBuffer[index] = 1.0f/(sampleRoot * sampleRoot) * frameBuffer[index];
+                    //gamma correction with gamma = 2
+                    frameBuffer[index].X = (float)Math.Sqrt(frameBuffer[index].X);
+                    frameBuffer[index].Y = (float)Math.Sqrt(frameBuffer[index].Y);
+                    frameBuffer[index].Z = (float)Math.Sqrt(frameBuffer[index].Z);
                 }
             }
         }
