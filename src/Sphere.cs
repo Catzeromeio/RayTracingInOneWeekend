@@ -3,14 +3,13 @@ using System.Numerics;
 
 namespace RayTracingInOneWeekend
 {
-    public class Sphere:Hittable
+    public class Sphere:GameObject,Hittable
     {
         float radius;
-        Vector3 center;
 
-        public Sphere(Vector3 sCenter, float sRadius)
+        public Sphere(Vector3 center, float sRadius)
         {
-            center = sCenter;
+            position = center;
             radius = sRadius;
         }
 
@@ -21,7 +20,7 @@ namespace RayTracingInOneWeekend
 
             //一元二次方程求解, 射线和球相交
             var a = Vector3.Dot(r.Direction, r.Direction);
-            var aMc = r.Origin - center;
+            var aMc = r.position - position;
             var baMc = Vector3.Dot(r.Direction, aMc);
 
             var b = 2 * baMc;
@@ -41,7 +40,7 @@ namespace RayTracingInOneWeekend
                 hitdata.t = mint; 
                 hitdata.point = r.At(mint);
                 //记录光线从里或者外部射入以及法线
-                hitdata.SetFaceNormal(r,hitdata.point - center);
+                hitdata.SetFaceNormal(r,hitdata.point - position);
                 return true;
             }
 
@@ -52,7 +51,7 @@ namespace RayTracingInOneWeekend
                 hitdata.t = maxt; 
                 hitdata.point = r.At(maxt);
                 //记录光线从里或者外部射入以及法线
-                hitdata.SetFaceNormal(r,hitdata.point - center);
+                hitdata.SetFaceNormal(r,hitdata.point - position);
                 return true;
             }
 

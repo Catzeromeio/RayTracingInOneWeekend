@@ -1,9 +1,8 @@
 ﻿using System.Numerics;
 namespace RayTracingInOneWeekend
 {
-    public class Ray
+    public class Ray:GameObject
     {
-        public Vector3 Origin { get; set; }
         private Vector3 direction;
         public Vector3 Direction {
             get { return direction; }
@@ -13,15 +12,15 @@ namespace RayTracingInOneWeekend
             }
         }
 
-        public Ray(Vector3 origin, Vector3 dir)
+        public Ray(Vector3 pos, Vector3 dir)
         {
-            Origin = origin;
+            position = pos;
             direction = Vector3.Normalize(dir);
         }
 
         public Vector3 At(float t)
         {
-            return Origin + t * direction;
+            return position + t * direction;
         }
     }
 }
