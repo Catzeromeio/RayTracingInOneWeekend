@@ -13,7 +13,7 @@ namespace RayTracingInOneWeekend
         private float viewPortHeight;
         private Size resolution;
 
-        public int sampleRoot = 8;
+        public int sampleRoot = 2;
 
         public Size Resolution
         {
