@@ -57,9 +57,16 @@ namespace RayTracingInOneWeekend
             mainCamera = new Camera(Screen.Width,Screen.Height,1,2);
             mainCamera.position = Vector3.Zero;
 
+            var material_ground = new Lambertian(new  Vector3(0.8f, 0.8f, 0.0f));
+            var material_center = new Lambertian(new  Vector3(0.7f, 0.3f, 0.3f));
+            var material_left = new Metal(new  Vector3(0.8f, 0.8f, 0.8f));
+            var material_right = new Metal(new  Vector3(0.8f, 0.6f, 0.2f));
+
             world = new HittableList();
-            world.Add(new Sphere(new Vector3(0,0,-1),0.5f));
-            world.Add(new Sphere(new Vector3(0,-100.5f,-1),100));
+            world.Add(new Sphere(new Vector3(0,-100.5f,-1),100f,material_ground));
+            world.Add(new Sphere(new Vector3(0,0,-1),0.5f,material_center));
+            world.Add(new Sphere(new Vector3(-1,0,-1),0.5f,material_left));
+            world.Add(new Sphere(new Vector3(1,0,-1),0.5f,material_right));
 
             randomer = new Random(1991);
         }

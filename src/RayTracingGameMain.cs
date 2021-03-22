@@ -15,9 +15,12 @@ namespace RayTracingInOneWeekend
             HitData hitdata = new HitData();
             if(scene.CastRay(ray,ref hitdata,0.001f))
             {
-                var randomDir = RandomInHemisphere(hitdata.normal);
-                var newRay = new Ray(hitdata.point,randomDir);
-                return 0.5f * Ray_Color(newRay,scene, depth);
+                Vector3 attenuation;
+                Ray scatter;
+                if (hitdata.material.Scatter(ray, hitdata, out attenuation, out scatter))
+                    return attenuation * Ray_Color(scatter, scene, depth);
+                else
+                    return Vector3.Zero;
             }
 
             var t = 0.5f * (ray.Direction.Y + 1.0f);
@@ -25,7 +28,7 @@ namespace RayTracingInOneWeekend
         }
 
         //使用极坐标
-        private static Vector3 RandomInUnitSphere()
+        public static Vector3 RandomInUnitSphere()
         {
             float a = (float)randomer.NextDouble() * 2 *Utilities.PI;
             float b = (float)randomer.NextDouble() * 2 *Utilities.PI;
@@ -38,7 +41,7 @@ namespace RayTracingInOneWeekend
             return new Vector3(x,y,z);
         }
 
-        private static Vector3 RandomInHemisphere(Vector3 normal)
+        public static Vector3 RandomInHemisphere(Vector3 normal)
         {
             var random = RandomInUnitSphere();
             if (Vector3.Dot(random, normal) > 0)

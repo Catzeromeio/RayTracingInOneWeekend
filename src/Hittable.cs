@@ -13,6 +13,8 @@ namespace RayTracingInOneWeekend
 
         public bool isHitFromOutside;
 
+        public Material material;
+
         public void SetFaceNormal(Ray ray, Vector3 outwardNormal)
         {
             outwardNormal = Vector3.Normalize(outwardNormal);

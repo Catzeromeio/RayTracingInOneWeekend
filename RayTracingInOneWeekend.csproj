@@ -60,6 +60,7 @@
     <Compile Include="src\GameObject.cs" />
     <Compile Include="src\Hittable.cs" />
     <Compile Include="src\HittableList.cs" />
+    <Compile Include="src\Material.cs" />
     <Compile Include="src\Ray.cs" />
     <Compile Include="src\RayTracingGameMain.cs" />
     <Compile Include="src\Sphere.cs" />

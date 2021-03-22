@@ -6,11 +6,13 @@ namespace RayTracingInOneWeekend
     public class Sphere:GameObject,Hittable
     {
         float radius;
+        Material material;
 
-        public Sphere(Vector3 center, float sRadius)
+        public Sphere(Vector3 center, float sRadius, Material sMaterial)
         {
             position = center;
             radius = sRadius;
+            material = sMaterial; 
         }
 
         public bool CastRay(Ray r, ref HitData hitdata, float minT = 0, float maxT = float.MaxValue)
@@ -39,6 +41,7 @@ namespace RayTracingInOneWeekend
             {
                 hitdata.t = mint; 
                 hitdata.point = r.At(mint);
+                hitdata.material = material;
                 //记录光线从里或者外部射入以及法线
                 hitdata.SetFaceNormal(r,hitdata.point - position);
                 return true;
@@ -50,6 +53,7 @@ namespace RayTracingInOneWeekend
             {
                 hitdata.t = maxt; 
                 hitdata.point = r.At(maxt);
+                hitdata.material = material;
                 //记录光线从里或者外部射入以及法线
                 hitdata.SetFaceNormal(r,hitdata.point - position);
                 return true;
