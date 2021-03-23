@@ -2,7 +2,6 @@
 
 namespace RayTracingInOneWeekend
 {
-    //todo add fuzzy
     public abstract class Material
     {
         abstract public bool Scatter(Ray ray, HitData hitdata, out Vector3 attenuation, out Ray scatter);
@@ -20,7 +19,8 @@ namespace RayTracingInOneWeekend
         public override bool Scatter(Ray ray, HitData hitdata, out Vector3 attenuation, out Ray scatter)
         {
             var scatter_direction = GameMain.RandomInHemisphere(hitdata.normal);
-            //todo check is close to zero, if true set normal
+            if (Utilities.CloseToZero(scatter_direction))
+                scatter_direction = hitdata.normal;
 
             scatter = new Ray(hitdata.point,scatter_direction);
             attenuation = albedo;
