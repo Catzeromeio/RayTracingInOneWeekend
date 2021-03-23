@@ -59,8 +59,8 @@ namespace RayTracingInOneWeekend
 
             var material_ground = new Lambertian(new  Vector3(0.8f, 0.8f, 0.0f));
             var material_center = new Lambertian(new  Vector3(0.7f, 0.3f, 0.3f));
-            var material_left = new Metal(new  Vector3(0.8f, 0.8f, 0.8f));
-            var material_right = new Metal(new  Vector3(0.8f, 0.6f, 0.2f));
+            var material_left = new Metal(new  Vector3(0.8f, 0.8f, 0.8f),0.3f);
+            var material_right = new Metal(new  Vector3(0.8f, 0.6f, 0.2f),1.0f);
 
             world = new HittableList();
             world.Add(new Sphere(new Vector3(0,-100.5f,-1),100f,material_ground));
