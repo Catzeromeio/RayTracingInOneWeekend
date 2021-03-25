@@ -43,5 +43,13 @@ namespace RayTracingInOneWeekend
             refractDir = Vector3.Zero;
             return false;
         }
+
+        //use Schlick's approximation for reflection
+        public static float GetReflectance(float cosine, float ref_index)
+        {
+            var r0 = (1 - ref_index) / (1 + ref_index);
+            r0 *= r0;
+            return r0 + (1 - r0) * ((float)Math.Pow(1 - cosine, 5));
+        }
     }
 }

@@ -43,7 +43,7 @@ namespace RayTracingInOneWeekend
                 hitdata.point = r.At(mint);
                 hitdata.material = material;
                 //记录光线从里或者外部射入以及法线
-                hitdata.SetFaceNormal(r,hitdata.point - position);
+                hitdata.SetFaceNormal(r,(hitdata.point - position)/radius);
                 return true;
             }
 
@@ -55,7 +55,7 @@ namespace RayTracingInOneWeekend
                 hitdata.point = r.At(maxt);
                 hitdata.material = material;
                 //记录光线从里或者外部射入以及法线
-                hitdata.SetFaceNormal(r,hitdata.point - position);
+                hitdata.SetFaceNormal(r,(hitdata.point - position)/radius);
                 return true;
             }
 

@@ -38,7 +38,7 @@ namespace RayTracingInOneWeekend
 
         public static HittableList world;
 
-        private static Random randomer;
+        public static Random randomer;
 
         public static void GameInit(Form form)
         {
@@ -67,6 +67,7 @@ namespace RayTracingInOneWeekend
             world.Add(new Sphere(new Vector3(0,-100.5f,-1),100f,material_ground));
             world.Add(new Sphere(new Vector3(0,0,-1),0.5f,material_center));
             world.Add(new Sphere(new Vector3(-1,0,-1),0.5f,material_left));
+            world.Add(new Sphere(new Vector3(-1,0,-1),-0.4f,material_left));
             world.Add(new Sphere(new Vector3(1,0,-1),0.5f,material_right));
 
             randomer = new Random(1991);

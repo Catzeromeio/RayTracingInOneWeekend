@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 
 namespace RayTracingInOneWeekend
 {
@@ -64,10 +65,14 @@ namespace RayTracingInOneWeekend
             var theEta = hitdata.isHitFromOutside ? 1.0f : eta;
             var theEta_primary = hitdata.isHitFromOutside ? eta : 1.0f;
 
-            Vector3 refractDir; 
+            Vector3 refractDir;
 
+            var cosine = Math.Min(Vector3.Dot(-ray.Direction,hitdata.normal) , 1.0f);
+
+            if (Utilities.GetReflectance(cosine,theEta/theEta_primary) > GameMain.randomer.NextDouble())
+                refractDir =  Utilities.Reflect(ray.Direction,hitdata.normal);
             //尝试折射，如果失败则进行反射
-            if(!Utilities.Refract(ray.Direction,hitdata.normal,theEta,theEta_primary,out refractDir))
+            else if(!Utilities.Refract(ray.Direction,hitdata.normal,theEta,theEta_primary,out refractDir))
                 refractDir =  Utilities.Reflect(ray.Direction,hitdata.normal);
 
             scatter = new Ray(hitdata.point,refractDir);
