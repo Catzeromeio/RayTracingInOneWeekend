@@ -47,4 +47,31 @@ namespace RayTracingInOneWeekend
             return (Vector3.Dot(hitdata.normal, scatter.Direction) > 0);
         }
     }
+
+    public class Dielectric : Material
+    {
+        private float eta;
+
+        public Dielectric(float theEta)
+        {
+            eta = theEta;
+        }
+
+        public override bool Scatter(Ray ray, HitData hitdata, out Vector3 attenuation, out Ray scatter)
+        {
+            //假设无衰减
+            attenuation = Vector3.One;
+            var theEta = hitdata.isHitFromOutside ? 1.0f : eta;
+            var theEta_primary = hitdata.isHitFromOutside ? eta : 1.0f;
+
+            Vector3 refractDir; 
+
+            //尝试折射，如果失败则进行反射
+            if(!Utilities.Refract(ray.Direction,hitdata.normal,theEta,theEta_primary,out refractDir))
+                refractDir =  Utilities.Reflect(ray.Direction,hitdata.normal);
+
+            scatter = new Ray(hitdata.point,refractDir);
+            return true;
+        }
+    }
 }
