@@ -8,11 +8,21 @@ namespace RayTracingInOneWeekend
     //摄像机看向-z
     public class Camera:GameObject
     {
+        static readonly float focalLength = 1;
+
+        private Size resolution;
+        private float vFov;
+
+        private Vector3 forward;
+        private Vector3 up;
+        private Vector3 left;
+
+        private Vector3 leftBottomViewPortCorner;
+
         public Vector3[] frameBuffer;
         public Vector3[] depthBuffer;
-        private float focalLength;
         private float viewPortHeight;
-        private Size resolution;
+        private float viewPortWidth;
 
         public int sampleRoot = 2;
         public int rayTracingDepth = 500;
@@ -32,11 +42,23 @@ namespace RayTracingInOneWeekend
             get { return resolution.Width / resolution.Height; }
         }
 
-        public Camera(int resolutionW,int resolutionH,float theFocalLength = 1,float theViewPortHeight = 2)
+
+        //vFov 度数
+        public Camera(Vector3 pos, Vector3 theLookAtPoint,Vector3 theUp, int resolutionW,int resolutionH,float theVFov)
         {
+            position = pos;
+
+            forward = Vector3.Normalize(position - theLookAtPoint);
+            left = Vector3.Normalize(Vector3.Cross(theUp,forward));
+            up = Vector3.Normalize(Vector3.Cross(forward, left));
+
             resolution = new Size(resolutionW, resolutionH);
-            focalLength = theFocalLength;
-            viewPortHeight = theViewPortHeight;
+            vFov = theVFov;
+
+            viewPortHeight = 2 * ((float)Math.Sin((Utilities.DegreesToRadians(vFov/2))));
+            viewPortWidth = viewPortHeight * AspectRatio;
+
+            leftBottomViewPortCorner = pos - (viewPortHeight / 2) * up -(viewPortWidth/2)*left - focalLength * forward;
 
             frameBuffer = new Vector3[resolution.Width * resolution.Height];
             depthBuffer = new Vector3[resolution.Width * resolution.Height];
@@ -68,12 +90,9 @@ namespace RayTracingInOneWeekend
                         {
                             //计算像素中心
                             var pixelP = new Vector2(i + si *ss + ss_half , j + sj*ss + ss_half);
-                            //中心平移到原点(2D)
-                            pixelP = pixelP - new Vector2(resolution.Width / 2.0f, resolution.Height / 2.0f);
-                            //缩放到视口大小
-                            pixelP = viewPortHeight / resolution.Height * pixelP;
-                            //从眼睛位置到3D空间缩放后像素发射射线
-                            var ray = new Ray(position, new Vector3(pixelP.X, pixelP.Y, position.Z -focalLength) - position);
+
+                            var ray = GetRay(pixelP.X/resolution.Width,pixelP.Y/resolution.Height);
+
                             //叠加
                             frameBuffer[index] += GameMain.Ray_Color(ray, scene,rayTracingDepth);
                         }
@@ -86,6 +105,12 @@ namespace RayTracingInOneWeekend
                     frameBuffer[index].Z = (float)Math.Sqrt(frameBuffer[index].Z);
                 }
             }
+        }
+
+        public Ray GetRay(float u, float v)
+        {
+            var dir = leftBottomViewPortCorner + u * viewPortWidth * left + v * viewPortHeight * up - position; 
+            return new Ray(position,Vector3.Normalize(dir));
         }
 
         public  void BlitFrameBufferToBitMap(Bitmap outputMap)
