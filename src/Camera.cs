@@ -39,7 +39,7 @@ namespace RayTracingInOneWeekend
 
         public float AspectRatio
         {
-            get { return resolution.Width / resolution.Height; }
+            get { return ((float)resolution.Width) / resolution.Height; }
         }
 
 
