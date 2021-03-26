@@ -8,10 +8,10 @@ namespace RayTracingInOneWeekend
     //摄像机看向-z
     public class Camera:GameObject
     {
-        static readonly float focalLength = 1;
-
         private Size resolution;
         private float vFov;
+        private float lensRadius;
+        private float focusDist;
 
         private Vector3 forward;
         private Vector3 up;
@@ -44,9 +44,12 @@ namespace RayTracingInOneWeekend
 
 
         //vFov 度数
-        public Camera(Vector3 pos, Vector3 theLookAtPoint,Vector3 theUp, int resolutionW,int resolutionH,float theVFov)
+        public Camera(Vector3 pos, Vector3 theLookAtPoint,Vector3 theUp, int resolutionW,int resolutionH,float theVFov, float theAperture, float theFocusDist)
         {
             position = pos;
+
+            lensRadius = theAperture/2.0f;
+            focusDist = theFocusDist;
 
             forward = Vector3.Normalize(position - theLookAtPoint);
             left = Vector3.Normalize(Vector3.Cross(theUp,forward));
@@ -55,10 +58,10 @@ namespace RayTracingInOneWeekend
             resolution = new Size(resolutionW, resolutionH);
             vFov = theVFov;
 
-            viewPortHeight = 2 * ((float)Math.Sin((Utilities.DegreesToRadians(vFov/2))));
+            viewPortHeight = 2 *focusDist* (float)Math.Tan((Utilities.DegreesToRadians(vFov/2)));
             viewPortWidth = viewPortHeight * AspectRatio;
 
-            leftBottomViewPortCorner = pos - (viewPortHeight / 2) * up -(viewPortWidth/2)*left - focalLength * forward;
+            leftBottomViewPortCorner = position - (viewPortHeight / 2) * up -(viewPortWidth/2)*left - focusDist * forward;
 
             frameBuffer = new Vector3[resolution.Width * resolution.Height];
             depthBuffer = new Vector3[resolution.Width * resolution.Height];
@@ -109,8 +112,10 @@ namespace RayTracingInOneWeekend
 
         public Ray GetRay(float u, float v)
         {
-            var dir = leftBottomViewPortCorner + u * viewPortWidth * left + v * viewPortHeight * up - position; 
-            return new Ray(position,Vector3.Normalize(dir));
+            var offset =  GameMain.RandomInUnitCircle();
+            var origin = position + lensRadius * offset.X * left + lensRadius* offset.Y * up;
+            var dir = leftBottomViewPortCorner + u * viewPortWidth * left + v * viewPortHeight * up - origin; 
+            return new Ray(origin,Vector3.Normalize(dir));
         }
 
         public  void BlitFrameBufferToBitMap(Bitmap outputMap)

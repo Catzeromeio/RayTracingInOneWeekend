@@ -49,5 +49,11 @@ namespace RayTracingInOneWeekend
             else
                 return -random;
         }
+
+        public static Vector2 RandomInUnitCircle()
+        {
+            float a = (float)randomer.NextDouble() * 2 *Utilities.PI;
+            return new Vector2((float)Math.Cos(a),(float)Math.Sin(a));
+        }
     }
 }

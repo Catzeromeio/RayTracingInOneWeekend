@@ -54,7 +54,11 @@ namespace RayTracingInOneWeekend
             timeLastFrameStart_s = 0;
             frameRate = 60;
 
-            mainCamera = new Camera(new Vector3(-2,2,1),new Vector3(0,0,-1),new Vector3(0,1,0),Screen.Width,Screen.Height,90);
+            Vector3 lookFrom = new Vector3(3, 3, 2);
+            Vector3 lookAtPoint = new Vector3(0, 0, -1);
+            float focusDist = (lookAtPoint - lookFrom).Length();
+
+            mainCamera = new Camera(lookFrom,lookAtPoint,new Vector3(0,1,0),Screen.Width,Screen.Height,20,2,focusDist);
 
             var material_ground = new Lambertian(new  Vector3(0.8f, 0.8f, 0.0f));
 
