@@ -24,7 +24,7 @@ namespace RayTracingInOneWeekend
         private float viewPortHeight;
         private float viewPortWidth;
 
-        public int sampleRoot = 2;
+        public int sampleRoot = 20;
         public int rayTracingDepth = 500;
 
         public Size Resolution
