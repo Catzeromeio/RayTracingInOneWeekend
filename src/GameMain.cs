@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Numerics;
@@ -9,6 +9,14 @@ namespace RayTracingInOneWeekend
     {
         public static int Width = 640;
         public static int Height = 360;
+    }
+
+    //当前模拟的内容的时间跨度
+    public static class SimulationTime
+    {
+        public static float startTime = 0f;
+        public static float endTime = 0.033f;
+        public static float duration = 0.033f;
     }
 
     public struct Coord
@@ -147,7 +155,8 @@ namespace RayTracingInOneWeekend
                             // diffuse
                             var albedo = RandomColor() * RandomColor();
                             sphere_material = new Lambertian(albedo);
-                            world.Add(new Sphere(center, 0.2f, sphere_material));
+                            Vector3 speed = GameMain.randomer.NextDouble() > 0.2f ? new Vector3(0,20,0): Vector3.Zero;
+                            world.Add(new Sphere(center, 0.2f, sphere_material, speed));
                         }
                         else if (choose_mat < 0.95)
                         {
@@ -155,13 +164,15 @@ namespace RayTracingInOneWeekend
                             var albedo = (RandomColor() * 0.5f) + new Vector3(0.5f, 0.5f, 0.5f);
                             var fuzz = (float)randomer.NextDouble() * 0.5f;
                             sphere_material = new Metal(albedo, fuzz);
-                            world.Add(new Sphere(center, 0.2f, sphere_material));
+                            Vector3 speed = GameMain.randomer.NextDouble() > 0.2f ? new Vector3(0,20,0): Vector3.Zero;
+                            world.Add(new Sphere(center, 0.2f, sphere_material,speed));
                         }
                         else
                         {
                             // glass
                             sphere_material = new Dielectric(1.5f);
-                            world.Add(new Sphere(center, 0.2f, sphere_material));
+                            Vector3 speed = GameMain.randomer.NextDouble() > 0.2f ? new Vector3(0,20,0): Vector3.Zero;
+                            world.Add(new Sphere(center, 0.2f, sphere_material,speed));
                         }
                     }
                 }

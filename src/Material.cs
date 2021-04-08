@@ -23,7 +23,7 @@ namespace RayTracingInOneWeekend
             if (Utilities.CloseToZero(scatter_direction))
                 scatter_direction = hitdata.normal;
 
-            scatter = new Ray(hitdata.point,scatter_direction);
+            scatter = new Ray(hitdata.point,scatter_direction, ray.time);
             attenuation = albedo;
             return true;
         }
@@ -43,7 +43,7 @@ namespace RayTracingInOneWeekend
         public override bool Scatter(Ray ray, HitData hitdata, out Vector3 attenuation, out Ray scatter)
         {
             var reflectDir = Utilities.Reflect(ray.Direction,hitdata.normal);
-            scatter = new Ray(hitdata.point, reflectDir + fuzzy * GameMain.RandomInUnitSphere());
+            scatter = new Ray(hitdata.point, reflectDir + fuzzy * GameMain.RandomInUnitSphere(), ray.time);
             attenuation = albedo; 
             return (Vector3.Dot(hitdata.normal, scatter.Direction) > 0);
         }
@@ -75,7 +75,7 @@ namespace RayTracingInOneWeekend
             else if(!Utilities.Refract(ray.Direction,hitdata.normal,theEta,theEta_primary,out refractDir))
                 refractDir =  Utilities.Reflect(ray.Direction,hitdata.normal);
 
-            scatter = new Ray(hitdata.point,refractDir);
+            scatter = new Ray(hitdata.point,refractDir, ray.time);
             return true;
         }
     }

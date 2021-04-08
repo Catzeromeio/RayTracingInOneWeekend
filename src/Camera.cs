@@ -6,8 +6,10 @@ namespace RayTracingInOneWeekend
 {
     //摄像机局部坐标系为右手坐标系
     //摄像机看向-z
-    public class Camera:GameObject
+    public class Camera
     {
+        public Vector3 position;
+
         private Size resolution;
         private float vFov;
         private float lensRadius;
@@ -24,8 +26,8 @@ namespace RayTracingInOneWeekend
         private float viewPortHeight;
         private float viewPortWidth;
 
-        public int sampleRoot = 20;
-        public int rayTracingDepth = 500;
+        public int sampleRoot = 2;
+        public int rayTracingDepth = 200;
 
         public Size Resolution
         {
@@ -115,7 +117,7 @@ namespace RayTracingInOneWeekend
             var offset =  GameMain.RandomInUnitCircle();
             var origin = position + lensRadius * offset.X * left + lensRadius* offset.Y * up;
             var dir = leftBottomViewPortCorner + u * viewPortWidth * left + v * viewPortHeight * up - origin; 
-            return new Ray(origin,Vector3.Normalize(dir));
+            return new Ray(origin,Vector3.Normalize(dir),SimulationTime.startTime + (float)GameMain.randomer.NextDouble()*SimulationTime.duration );
         }
 
         public  void BlitFrameBufferToBitMap(Bitmap outputMap)

@@ -8,11 +8,10 @@ namespace RayTracingInOneWeekend
         float radius;
         Material material;
 
-        public Sphere(Vector3 center, float sRadius, Material sMaterial)
+        public Sphere(Vector3 initPosition, float sRadius, Material sMaterial, Vector3? theVelocity = null):base(initPosition, theVelocity)
         {
-            position = center;
             radius = sRadius;
-            material = sMaterial; 
+            material = sMaterial;
         }
 
         public bool CastRay(Ray r, ref HitData hitdata, float minT = 0, float maxT = float.MaxValue)
@@ -22,7 +21,7 @@ namespace RayTracingInOneWeekend
 
             //一元二次方程求解, 射线和球相交
             var a = Vector3.Dot(r.Direction, r.Direction);
-            var aMc = r.position - position;
+            var aMc = r.position - CurrentPosition(r.time);
             var baMc = Vector3.Dot(r.Direction, aMc);
 
             var b = 2 * baMc;
@@ -43,7 +42,7 @@ namespace RayTracingInOneWeekend
                 hitdata.point = r.At(mint);
                 hitdata.material = material;
                 //记录光线从里或者外部射入以及法线
-                hitdata.SetFaceNormal(r,(hitdata.point - position)/radius);
+                hitdata.SetFaceNormal(r,(hitdata.point - CurrentPosition(r.time))/radius);
                 return true;
             }
 
@@ -55,7 +54,7 @@ namespace RayTracingInOneWeekend
                 hitdata.point = r.At(maxt);
                 hitdata.material = material;
                 //记录光线从里或者外部射入以及法线
-                hitdata.SetFaceNormal(r,(hitdata.point - position)/radius);
+                hitdata.SetFaceNormal(r,(hitdata.point - CurrentPosition(r.time))/radius);
                 return true;
             }
 
